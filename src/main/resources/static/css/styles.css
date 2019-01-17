@@ -1,0 +1,49 @@
+body
+{
+    font-family: sans-serif;
+    background-image: url('../../img/cheese.jpg');
+    background-size: 500px 300px;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    margin-right: 200px;
+    background-attachment: fixed;
+}
+
+ul
+{
+    list-style-type: circle;
+    padding: 20px;
+}
+
+ul li {
+  background: #ffd27f;
+  margin: 5px;
+}
+
+label {
+  background-color: #ff9800;
+  color: white;
+}
+
+input[type=text] {
+  border: none;
+  border-bottom: 2px solid brown;
+  margin-bottom:2px;
+}
+
+textarea
+{
+  border: 2px solid brown;
+}
+
+.button {
+  background-color: #ff9800;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}

@@ -8,13 +8,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Controller
 //Every handler in classes must start with cheese
 @RequestMapping("cheese")
 public class CheeseController {
 
-    static ArrayList<String> cheeses = new ArrayList<>();
+    /*We used a ArrayList for just the cheese now we have added a description,
+    so we need a Hash Map.
+    static ArrayList<String> cheeses = new ArrayList<>();*/
+    HashMap<String, String> addForm = new HashMap<>();
 
     //Request path: /cheese
     @RequestMapping(value = "")
@@ -29,7 +33,7 @@ public class CheeseController {
 
         //Sending information to the html view
         model.addAttribute("title", "My Cheeses");
-        model.addAttribute("cheeses", cheeses);
+        model.addAttribute("addForm", addForm);
         //Put the HTML into a folder named cheese.
         //Returns the HTML index template
         return "cheese/index";
@@ -52,12 +56,14 @@ public class CheeseController {
     }
     */
 
-    // Correspoonds to the add.html
+    // Corresponds to the add.html
     // @RequestParam looks in add.html to find the String variable.
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddCheeseForm(@RequestParam String cheeseName)
+    public String processAddCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription)
     {
-        cheeses.add(cheeseName);
+        addForm.put(cheeseName,cheeseDescription);
+        //Old way of just adding cheese without a description attached.
+        //cheeses.add(cheeseName);
         //Redirect to /cheese
         return "redirect:";
     }
