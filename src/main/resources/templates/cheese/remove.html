@@ -6,5 +6,13 @@
 <body>
     <h1 th:text="${title}">Default Title</h1>
     <nav th:replace="fragments :: navigation"></nav>
+    <p th:unless="${addForm} and ${addForm.size()}" >no cheese :( </p>
+    <form method="post">
+        <div th:each="formData: ${addForm}">
+            <input th:type="checkbox" th:name="${formData.key}" th:value="${formData}" th:id="${formData}" th:text="${formData.key + ': ' + formData.value}" />
+            <br/>
+        </div>
+        <input type="submit" class="button" value="Remove Cheese" />
+    </form>
 </body>
 </html>

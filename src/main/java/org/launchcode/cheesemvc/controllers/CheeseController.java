@@ -1,5 +1,6 @@
 package org.launchcode.cheesemvc.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 //Every handler in classes must start with cheese
@@ -65,6 +67,24 @@ public class CheeseController {
         //Old way of just adding cheese without a description attached.
         //cheeses.add(cheeseName);
         //Redirect to /cheese
+        return "redirect:";
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.GET)
+    public String displayRemoveCheeseForm(Model model)
+    {
+        model.addAttribute("title", "Remove Cheese");
+        model.addAttribute("addForm", addForm);
+        return "cheese/remove";
+    }
+
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    public String processRemoveCheeseForm(@RequestParam Map<String, String> formData)
+    {
+        for(Map.Entry<String, String> formElement : formData.entrySet())
+        {
+            addForm.remove(formElement.getKey());
+        }
         return "redirect:";
     }
 }
