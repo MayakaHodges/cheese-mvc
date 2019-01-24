@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <head th:replace="fragments :: head"></head>
-</head>
-<body>
-    <h1 th:text="${title}">Default Title</h1>
-    <nav th:replace="fragments :: navigation"></nav>
-    <p th:unless="${addForm} and ${addForm.size()}" >no cheese :( </p>
-    <ul>
-        <li th:each="formData: ${addForm}">
-            <p th:text="${formData.key + ': ' + formData.value}"></p>
-        </li>
-    </ul>
+<head th:replace="fragments :: head"></head>
+
+<body class="container body-content">
+
+<h1 th:text="${title}">Default Title</h1>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<p th:unless="${cheeses} and ${cheeses.size()}">no cheese :(</p>
+
+
+<table class="table">
+
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+
+    <tr th:each="cheese : ${cheeses}">
+        <td th:text="${cheese.name}"></td>
+        <td th:text="${cheese.description}"></td>
+    </tr>
+
+</table>
+
 </body>
 </html>
