@@ -1,30 +1,60 @@
 package org.launchcode.cheesemvc.modles;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Entity
 public class Cheese {
 
+    @Id
+    @GeneratedValue
+    private int id;
+
+    @NotNull
+    @Size(min=3, max=15)
     private String name;
+
+    @NotNull
+    @Size(min=1, message="Description must not be empty.")
     private String description;
-    private int cheeseId;
-    private static int nextId = 1;
+
+    private CheeseType type;
+
+    /*Changing from using an  id to creating a database and letting it use a
+    primary key id.
+
+   private int cheeseId;
+   private static int nextId = 1;
+   */
 
     public Cheese(String name, String description) {
-        this();
+        //this(); Removed because the constructor below is now a default constructor.
         this.name = name;
         this.description = description;
     }
 
     public Cheese()
     {
-        cheeseId = nextId;
-        nextId++;
+        //cheeseId = nextId;
+        //nextId++;
     }
 
+    /*
+    We have now made the above a default constructor and we no longer need the
+    getter and setter for it.
     public int getCheeseId() {
         return cheeseId;
     }
 
     public void setCheeseId(int cheeseId) {
         this.cheeseId = cheeseId;
+    }*/
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -41,5 +71,13 @@ public class Cheese {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public CheeseType getType() {
+        return type;
+    }
+
+    public void setType(CheeseType type) {
+        this.type = type;
     }
 }
