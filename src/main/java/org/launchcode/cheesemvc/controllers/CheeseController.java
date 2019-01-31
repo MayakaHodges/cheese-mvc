@@ -1,7 +1,9 @@
 package org.launchcode.cheesemvc.controllers;
 
-import org.launchcode.cheesemvc.modles.Cheese;
-import org.launchcode.cheesemvc.modles.CheeseType;
+import org.launchcode.cheesemvc.modles.forms.Category;
+import org.launchcode.cheesemvc.modles.forms.Cheese;
+//import org.launchcode.cheesemvc.modles.CheeseType;
+import org.launchcode.cheesemvc.modles.data.CategoryDao;
 import org.launchcode.cheesemvc.modles.data.CheeseDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by LaunchCode
@@ -24,6 +27,9 @@ public class CheeseController {
 
     @Autowired
     private CheeseDao cheeseDao;
+
+    @Autowired
+    private CategoryDao categoryDao;
 
     // Request path: /cheese
     @RequestMapping(value = "")
@@ -39,26 +45,23 @@ public class CheeseController {
     public String displayAddCheeseForm(Model model) {
         model.addAttribute("title", "Add Cheese");
         model.addAttribute("cheese", new Cheese());
-        model.addAttribute("cheeseTypes", CheeseType.values());
+        model.addAttribute("cheeseTypes", categoryDao.findAll());
         return "cheese/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddCheeseForm(@ModelAttribute @Valid Cheese newCheese,
-                                       Errors errors, Model model) {
-        /*
-        * What ModelAttribute does:
-        * It is called model binding.
-        * Cheese newCheese = new Cheese();
-        * newCheese.setName(Request.getParameter("name"));
-        * newCheese.setDescription(Request.getParameter("description"));
-        * Behind the scene work.
-         */
+                                       Errors errors, @RequestParam int categoryId, Model model)
+    {
         if (errors.hasErrors())
         {
             model.addAttribute("title", "Add Cheese");
+            model.addAttribute("categories", categoryDao.findAll())
             return "cheese/add";
         }
+
+        Category cat = categoryDao.findAllById(categoryId);
+        newCheese.setCategory(cat);
         cheeseDao.save(newCheese);
         return "redirect:";
     }
@@ -78,6 +81,16 @@ public class CheeseController {
             cheeseDao.deleteById(cheeseId);
         }
         return "redirect:";
+    }
+
+    @RequestMapping(value = "category", method = RequestMethod.GET)
+    public String category(Model model, @RequestParam int id)
+    {
+        Category cat = categoryDao.findAllById(id);
+        List<Cheese> cheeses=cat.getCheeses();
+        model.addAttribute("cheeses", cheeses);
+        model.addAttribute("title", "Cheese in Category: " + cat.getName());
+        return"cheese/index";
     }
 
 }

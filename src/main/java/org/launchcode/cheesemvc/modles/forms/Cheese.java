@@ -1,10 +1,11 @@
-package org.launchcode.cheesemvc.modles;
+package org.launchcode.cheesemvc.modles.forms;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.launchcode.cheesemvc.modles.forms.Category;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 public class Cheese {
@@ -21,7 +22,13 @@ public class Cheese {
     @Size(min=1, message="Description must not be empty.")
     private String description;
 
-    private CheeseType type;
+    @ManyToOne
+    private Category category;
+
+    @ManyToMany(mappedBy = "cheeses")
+    private List<Menu> menus;
+
+    //private CheeseType type;
 
     /*Changing from using an  id to creating a database and letting it use a
     primary key id.
@@ -73,11 +80,12 @@ public class Cheese {
         this.description = description;
     }
 
+    /*
     public CheeseType getType() {
         return type;
     }
 
     public void setType(CheeseType type) {
         this.type = type;
-    }
+    }*/
 }
