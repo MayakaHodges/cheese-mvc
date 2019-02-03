@@ -1,7 +1,5 @@
 package org.launchcode.cheesemvc.modles.forms;
 
-import org.launchcode.cheesemvc.modles.forms.Category;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,37 +26,14 @@ public class Cheese {
     @ManyToMany(mappedBy = "cheeses")
     private List<Menu> menus;
 
-    //private CheeseType type;
-
-    /*Changing from using an  id to creating a database and letting it use a
-    primary key id.
-
-   private int cheeseId;
-   private static int nextId = 1;
-   */
-
     public Cheese(String name, String description) {
-        //this(); Removed because the constructor below is now a default constructor.
         this.name = name;
         this.description = description;
     }
 
     public Cheese()
     {
-        //cheeseId = nextId;
-        //nextId++;
     }
-
-    /*
-    We have now made the above a default constructor and we no longer need the
-    getter and setter for it.
-    public int getCheeseId() {
-        return cheeseId;
-    }
-
-    public void setCheeseId(int cheeseId) {
-        this.cheeseId = cheeseId;
-    }*/
 
     public int getId() {
         return id;
@@ -80,12 +55,15 @@ public class Cheese {
         this.description = description;
     }
 
-    /*
-    public CheeseType getType() {
-        return type;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setType(CheeseType type) {
-        this.type = type;
-    }*/
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
 }

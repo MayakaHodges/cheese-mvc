@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by LaunchCode
@@ -51,17 +52,21 @@ public class CheeseController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddCheeseForm(@ModelAttribute @Valid Cheese newCheese,
-                                       Errors errors, @RequestParam int categoryId, Model model)
+                                       Errors errors,
+                                       @RequestParam int categoryId,
+                                       Model model)
     {
         if (errors.hasErrors())
         {
             model.addAttribute("title", "Add Cheese");
-            model.addAttribute("categories", categoryDao.findAll())
+            model.addAttribute("categories", categoryDao.findAll());
             return "cheese/add";
         }
 
-        Category cat = categoryDao.findAllById(categoryId);
-        newCheese.setCategory(cat);
+
+        categoryDao.findById(categoryId);
+        Optional<Category> cat = categoryDao.findById(categoryId);
+        newCheese.setCategory(cat.get());
         cheeseDao.save(newCheese);
         return "redirect:";
     }
@@ -86,10 +91,10 @@ public class CheeseController {
     @RequestMapping(value = "category", method = RequestMethod.GET)
     public String category(Model model, @RequestParam int id)
     {
-        Category cat = categoryDao.findAllById(id);
-        List<Cheese> cheeses=cat.getCheeses();
+        Optional<Category> cat = categoryDao.findById(id);
+        List<Cheese> cheeses=cat.get().getCheeses();
         model.addAttribute("cheeses", cheeses);
-        model.addAttribute("title", "Cheese in Category: " + cat.getName());
+        model.addAttribute("title", "Cheese in Category: " + cat.get().getName());
         return"cheese/index";
     }
 
